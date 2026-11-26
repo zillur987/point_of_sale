@@ -13,7 +13,7 @@
         .fade-enter-active, .fade-leave-active { transition: opacity .2s, transform .2s; }
         .fade-enter-from, .fade-leave-to { opacity: 0; transform: translateX(20px); }
     </style>
-    @vite('resources/js/app.js')
+    @vite('frontend/resources/js/app.js')
 </head>
 <body>
     <div id="app"></div>

@@ -2,13 +2,18 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BranchController;
+use App\Http\Controllers\Api\V1\BrandController;
+use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\DashboardController;
 use App\Http\Controllers\Api\V1\InventoryAdController;
 use App\Http\Controllers\Api\V1\InventoryController;
 use App\Http\Controllers\Api\V1\MyAccessController;
 use App\Http\Controllers\Api\V1\PermissionController;
+use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\RoleController;
+use App\Http\Controllers\Api\V1\UnitController;
 use App\Http\Controllers\Api\V1\UserAccessController;
+use App\Http\Controllers\Api\V1\VariantLookupController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -48,5 +53,17 @@ Route::prefix('v1')->group(function () {
         Route::put('access/users/{user}/roles', [UserAccessController::class, 'updateRoles'])->middleware('permission:users.edit')->name('access.users.roles');
 
         Route::apiResource('branches', BranchController::class);
+
+        // Must be declared before apiResource so "tree" is not treated as a {category} id.
+        Route::get('categories/tree', [CategoryController::class, 'tree']);
+
+        Route::apiResource('categories', CategoryController::class);
+        Route::apiResource('brands', BrandController::class);
+        Route::apiResource('units', UnitController::class);
+        Route::apiResource('products', ProductController::class);
+
+        // POS lookups
+        Route::get('variants/search', [VariantLookupController::class, 'search']);
+        Route::get('variants/barcode/{barcode}', [VariantLookupController::class, 'barcode']);
     });
 });
